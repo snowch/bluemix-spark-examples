@@ -8,7 +8,7 @@ This repository contains example projects to help you quickly get started with S
 
 #### Mandatory
 
-- Acess to a Bluemix Spark service instance
+- Access to a Bluemix Spark service instance
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
 - You are comfortable running commands in the terminal or console
