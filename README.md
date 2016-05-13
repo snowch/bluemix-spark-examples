@@ -1,5 +1,7 @@
 *********************************************************************
 
+[![Build Status](https://travis-ci.org/snowch/bluemix-spark-submit-examples.png)](https://travis-ci.org/snowch/bluemix-spark-submit-examples)
+
 This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
 
 *********************************************************************
