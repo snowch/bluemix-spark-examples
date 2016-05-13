@@ -9,13 +9,6 @@ See the README file in each project for instructions how to run the example.
 
 *********************************************************************
 
-#### Elasticsearch 
-
-- Push data to Elasticsearch [[Elasticsearch](./Elasticsearch)]
-- Pull data from Elasticsearch [[Elasticsearch](./Elasticsearch)]
-
-*********************************************************************
-
 #### Cloudant 
 
 - Push data to Cloudant [[Cloudant](./Cloudant)]
@@ -29,6 +22,27 @@ See the README file in each project for instructions how to run the example.
 - Pull data from dashDB (TODO ... migrate from [here](https://github.com/snowch/biginsight-examples/tree/master/examples/DashDBIntegrationWithSpark))
 
 *********************************************************************
+
+#### Elasticsearch 
+
+- Push data to Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
+- Pull data from Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
+
+*********************************************************************
+#### mongoDB 
+
+- Push data to mongoDB on Compose (TODO)
+- Pull data from mongoDB on Compose (TODO)
+
+*********************************************************************
+
+#### Redis, postgres on compose
+
+- Push data to Redis, postgres on compose (TODO)
+- Pull data from Redis, postgres on compose (TODO)
+
+*********************************************************************
+
 
 #### Additional scripts
 
