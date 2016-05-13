@@ -13,6 +13,8 @@ buildscript {
     }
 }
 
+plugins { id 'java' }
+
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -81,7 +83,7 @@ task baseTest(dependsOn: testSetup) << {
 
 }
 
-task test(dependsOn: baseTest) << {
+task check(dependsOn: baseTest, type: Test, overwrite: true) << {
     println "Finished running tests."
     println "*** Test output can be found in '${projectDir}/build/test/' ***"
 }
