@@ -72,6 +72,8 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
     commandLine cmd
 }
 
+// To test importing (pulling) data, we use the ExamplePush task to create some data in objectstore 
+// for us to import
 task('ExamplePull', dependsOn: ExamplePush, type: Exec) {
 
     def cmd = ["../../spark-submit.sh",
