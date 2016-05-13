@@ -30,6 +30,15 @@ def vcaptext = file('../../vcap.json').text
 def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
 assert cluster_master_url != null
 
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    // the spark swift library
+    compile 'com.ibm.stocator:stocator:1.0.2'
+}
 
 // create jar file with all dependencies
 task('SetupLibs', type: Jar) {
