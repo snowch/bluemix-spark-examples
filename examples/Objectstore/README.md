@@ -2,14 +2,15 @@
 
 This example uses the [Stocator](https://github.com/SparkTC/stocator) spark library to:
 
-- upload the table of wordcounts from the LICENSE file to an object store container
+- process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container
+- connect to objectstore and pull the summary word count data into the spark environment
 
 The [build.gradle](./build.gradle) script contains two main tasks for the above behavior, with task names 'ExamplePush' and 'ExamplePull'.  Inspect these tasks for details.
 
 *********************************************************************
 #### Instructions
 
-Ensure you have followed the Setup Instructions on the [project home page README](https://github.com/snowch/biginsight-examples), then edit your connection.properties file so that it has the following properties that point to your Objectstore container:
+Ensure you have followed the Setup Instructions on the [project home page README](https://github.com/snowch/bluemix-spark-submit-examples), then edit your connection.properties file so that it has the following properties that point to your Objectstore container:
 
 ```bash
 ### auth url ###
@@ -66,15 +67,4 @@ Run this example by changing into the current directory then executing:
 ../../gradlew.bat ExamplePush
 ../../gradlew.bat ExamplePull
 ```
-
-*********************************************************************
-
-Note: you can run this script from the top level project folder using the gradle `-p` argument:
-
-```
-./gradlew -p examples/ObjectStoreIntegrationWithSwift ExamplePush
-./gradlew -p examples/ObjectStoreIntegrationWithSwift ExamplePull
-```
-
-*********************************************************************
 
