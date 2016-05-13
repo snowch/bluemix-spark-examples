@@ -42,7 +42,7 @@ def buildProject(proj) {
             // if this isn't a task, continue looping
             return false
         }
-//        try {
+        try {
             FileWriter writer = new FileWriter("build/test/${proj}-${subTask.name}.txt")
             GradleRunner.create()
                     .withProjectDir(file("./examples/${proj}/"))
@@ -51,10 +51,10 @@ def buildProject(proj) {
                     .withArguments([subTask.name, '-PdebugExample'])
                     .build()
             writer.close()
-//        } catch (Exception e) { 
-//            println "Test failed  ${proj}::${subTask.name}"
-//            return
-//        }
+        } catch (Exception e) { 
+            println "Test failed  ${proj}::${subTask.name}"
+            throw e
+        }
         println "Test passed  ${proj}::${subTask.name}"
     }
 }
