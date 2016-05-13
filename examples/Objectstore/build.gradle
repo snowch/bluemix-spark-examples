@@ -1,0 +1,99 @@
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.fs.Path
+import org.apache.hadoop.fs.RemoteIterator
+import com.ibm.stocator.fs.swift.SwiftAPIClient
+import groovy.json.JsonSlurper
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.ibm.stocator:stocator:1.0.2'
+        classpath 'org.apache.hadoop:hadoop-mapreduce-client-core:2.2.0'
+        classpath 'org.apache.hadoop:hadoop-common:2.2.0'
+        // uberjar
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+    }
+}
+
+plugins {
+  id 'java'
+}
+
+// set the dependencies for compiling the groovy script and mapreduce classes
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    // the spark swift library
+    //compile 'com.ibm.stocator:stocator:1.0.2'
+}
+
+def slurper = new JsonSlurper()
+
+def props = new Properties()
+props.load(new FileInputStream("$projectDir/../../connection.properties"))
+
+def os_auth_url    = props.objectstore_auth_url
+def os_tenant      = props.objectstore_tenant
+def os_username    = props.objectstore_username
+def os_password    = props.objectstore_password
+def os_region      = props.objectstore_region
+def os_auth_method = props.objectstore_auth_method
+def os_container   = "${new Date().getTime()}"
+
+
+// create jar file with all dependencies
+task('SetupLibs', type: Jar) {
+    baseName = 'stocator-library-with-dependencies'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+task("DeleteOutput", type:Delete) {
+   delete fileTree('./') {
+        include '**/*.log'
+        include '**/stderr_*'
+        include '**/stdout_*'
+    }
+}
+
+
+task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
+
+    def vcaptext = file('../../vcap.json').text
+
+    def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
+
+    assert cluster_master_url != null
+    
+    def cmd = ["../../spark-submit.sh",
+                           "--vcap", "../../vcap.json",
+                           "--deploy-mode", "cluster",
+                           "--master", "${cluster_master_url}",
+                           "--jars", "./build/libs/stocator-library-with-dependencies.jar",
+                           "--files", "./LICENSE",
+                           "./exporttoswift.py",
+                               "file://LICENSE",
+                               "'${os_auth_url}'",
+                               "'${os_tenant}'",
+                               "'${os_username}'",
+                               "'${os_password}'",
+                               "'${os_region}'",
+                               "'${os_auth_method}'",
+                               "'${os_container}'"]
+    println cmd.join(" ")
+
+    commandLine cmd
+}
+
+
+task('Example') {
+    dependsOn ExamplePush
+}

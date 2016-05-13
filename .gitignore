@@ -1,0 +1,9 @@
+spark-submit_*.log
+stderr_*
+stdout_*
+
+connection.properties
+vcap.json
+
+**/.gradle/
+**/build/
