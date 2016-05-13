@@ -10,7 +10,7 @@ Note that project has a dependency on the following issue: https://github.com/sn
 
 #### Mandatory
 
-- Acess to a Bluemix Spark service instance
+- Access to a Bluemix Spark service instance
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
 - You are comfortable running commands in the terminal or console
@@ -28,6 +28,7 @@ Note that project has a dependency on the following issue: https://github.com/sn
 
 - Clone this repository `git clone https://github.com/snowch/bluemix-spark-submit-examples.git`
 - Copy `connection.properties_template` to `connection.properties`
+- Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
 - Follow the instructions in the README.md for your chosen [example](./examples/README.md)
 
 *********************************************************************
