@@ -1,6 +1,4 @@
 *********************************************************************
-### README
-*********************************************************************
 
 This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
 
