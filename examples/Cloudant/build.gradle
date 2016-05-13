@@ -1,0 +1,100 @@
+import groovy.json.JsonSlurper
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'de.undercouch:gradle-download-task:3.0'
+    }
+}
+
+plugins {
+    id "de.undercouch.download" version "3.0.0"
+}
+
+import de.undercouch.gradle.tasks.download.Download
+
+
+def props = new Properties()
+props.load(new FileInputStream("$projectDir/../../connection.properties"))
+
+def cl_hostname = props.cl_push_hostname
+def cl_username = props.cl_push_username
+def cl_password = props.cl_push_password
+
+def slurper = new JsonSlurper()
+def vcaptext = file('../../vcap.json').text
+def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
+assert cluster_master_url != null
+
+def db = "test-${new Date().getTime()}"
+
+
+task("DeleteOutput", type:Delete) {
+   delete fileTree('./') {
+        include '**/*.log'
+        include '**/stderr_*'
+        include '**/stdout_*'
+    }
+}
+
+task("GetCloudantSpark", type: Download) {
+    src 'https://github.com/cloudant-labs/spark-cloudant/releases/download/v1.6.3/cloudant-spark-v1.6.3-125.jar'
+    dest buildDir
+    acceptAnyCertificate true
+    onlyIfNewer true
+    quiet true
+}
+
+task('ExamplePush', dependsOn: [DeleteOutput, GetCloudantSpark]) << {
+
+    def cmd = ["../../spark-submit.sh",
+                           "--vcap", "../../vcap.json",
+                           "--deploy-mode", "cluster",
+                           "--master", "${cluster_master_url}",
+                           "--jars", "./build/cloudant-spark-v1.6.3-125.jar",
+                           "--files", "./LICENSE",
+                           "./export_to_cloudant.py",
+                               "file://LICENSE",
+                               "'${cl_hostname}'",
+                               "'${cl_username}'",
+                               "'${cl_password}'",
+                               "'${db}'"]
+
+    println cmd.join(" ") // print out command executed for debugging purposes
+   
+    exec {
+        commandLine cmd
+    }
+
+    println "\nSUCCESS >> Summarised LICENSE file has been saved to https://${cl_hostname}/${db}"
+}
+
+task('ExamplePull', dependsOn: ExamplePush ) << {
+
+    def cmd = ["../../spark-submit.sh",
+                           "--vcap", "../../vcap.json",
+                           "--deploy-mode", "cluster",
+                           "--master", "${cluster_master_url}",
+                           "--jars", "./build/cloudant-spark-v1.6.3-125.jar",
+                           "--files", "./LICENSE",
+                           "./import_from_cloudant.py",
+                               "'${cl_hostname}'",
+                               "'${cl_username}'",
+                               "'${cl_password}'",
+                               "'${db}'"]
+
+    println cmd.join(" ") // print out command executed for debugging purposes
+   
+    exec {
+        commandLine cmd
+    }
+
+    println "\nSUCCESS >> Summarised LICENSE file has been saved to https://${cl_hostname}/${db}"
+
+}
+
+task('Example') {
+    dependsOn ExamplePush, ExamplePull
+}
