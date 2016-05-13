@@ -1,8 +1,3 @@
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.FileSystem
-import org.apache.hadoop.fs.Path
-import org.apache.hadoop.fs.RemoteIterator
-import com.ibm.stocator.fs.swift.SwiftAPIClient
 import groovy.json.JsonSlurper
 
 buildscript {
@@ -12,27 +7,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.ibm.stocator:stocator:1.0.2'
-        classpath 'org.apache.hadoop:hadoop-mapreduce-client-core:2.2.0'
-        classpath 'org.apache.hadoop:hadoop-common:2.2.0'
         // uberjar
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
     }
 }
 
-plugins {
-  id 'java'
-}
+plugins { id 'java' }
 
-// set the dependencies for compiling the groovy script and mapreduce classes
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
-dependencies {
-    // the spark swift library
-    //compile 'com.ibm.stocator:stocator:1.0.2'
-}
 
 def slurper = new JsonSlurper()
 
@@ -46,6 +27,11 @@ def os_password    = props.objectstore_password
 def os_region      = props.objectstore_region
 def os_auth_method = props.objectstore_auth_method
 def os_container   = "${new Date().getTime()}"
+
+def vcaptext = file('../../vcap.json').text
+def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
+
+assert cluster_master_url != null
 
 
 // create jar file with all dependencies
@@ -67,12 +53,6 @@ task("DeleteOutput", type:Delete) {
 
 task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
 
-    def vcaptext = file('../../vcap.json').text
-
-    def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
-
-    assert cluster_master_url != null
-    
     def cmd = ["../../spark-submit.sh",
                            "--vcap", "../../vcap.json",
                            "--deploy-mode", "cluster",
@@ -88,12 +68,30 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
                                "'${os_region}'",
                                "'${os_auth_method}'",
                                "'${os_container}'"]
-    println cmd.join(" ")
+    println cmd.join(" ") // print out command executed for debugging purposes
+    commandLine cmd
+}
 
+task('ExamplePull', dependsOn: ExamplePush, type: Exec) {
+
+    def cmd = ["../../spark-submit.sh",
+                           "--vcap", "../../vcap.json",
+                           "--deploy-mode", "cluster",
+                           "--master", "${cluster_master_url}",
+                           "--jars", "./build/libs/stocator-library-with-dependencies.jar",
+                           "./importfromswift.py",
+                               "'${os_auth_url}'",
+                               "'${os_tenant}'",
+                               "'${os_username}'",
+                               "'${os_password}'",
+                               "'${os_region}'",
+                               "'${os_auth_method}'",
+                               "'${os_container}'"]
+    println cmd.join(" ") // print out command executed for debugging purposes
     commandLine cmd
 }
 
 
 task('Example') {
-    dependsOn ExamplePush
+    dependsOn ExamplePush, ExamplePull
 }

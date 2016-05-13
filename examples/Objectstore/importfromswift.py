@@ -25,18 +25,17 @@ from pyspark import SparkContext
 from pyspark.sql import SQLContext
 
 if __name__ == "__main__":
-    if len(sys.argv) != 9:
-        print("Usage: exporttoswift <license file> <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
+    if len(sys.argv) != 8:
+        print("Usage: importfromswift <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
         exit(-1)
 
-    license_filename = sys.argv[1]
-    os_auth_url      = sys.argv[2]
-    os_tenant        = sys.argv[3]
-    os_username      = sys.argv[4]
-    os_password      = sys.argv[5]
-    os_region        = sys.argv[6]
-    os_auth_method   = sys.argv[7]
-    os_container     = sys.argv[8]
+    os_auth_url      = sys.argv[1]
+    os_tenant        = sys.argv[2]
+    os_username      = sys.argv[3]
+    os_password      = sys.argv[4]
+    os_region        = sys.argv[5]
+    os_auth_method   = sys.argv[6]
+    os_container     = sys.argv[7]
 
     sc = SparkContext()
 
@@ -56,17 +55,18 @@ if __name__ == "__main__":
         sc._jsc.hadoopConfiguration().set(prefix + ".region",       os_region)
 
     sqlContext = SQLContext(sc)
-
-    # read file from HDFS
-    lines = sc.textFile(license_filename, 1)
-    counts = lines.flatMap(lambda x: x.split(' ')) \
-                  .map(lambda x: (x, 1)) \
-                  .reduceByKey(add) \
-                  .filter(lambda x: x[0].isalnum())
+    
+    # This script loads the data that was uploaded to object store using the script ./exporttoswift.py, e.g.
+    
+    # counts                                                  04/18/2016 8:21 PM        0 KB
+    # counts/_SUCCESS                                         04/18/2016 8:21 PM        0 KB
+    # counts/part-00000-attempt_201604181921_0003_m_000000_2  04/18/2016 8:21 PM        6 KB
 
     swift_file_url = "swift2d://{0}.{1}/counts".format(os_container, os_region)
 
-    # save to swift
-    counts.saveAsTextFile(swift_file_url)
+    # import the data
+    imported_data = sc.textFile(swift_file_url)
 
+    print(imported_data.take(10))
+    
     sc.stop()
