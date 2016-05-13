@@ -1069,6 +1069,7 @@ then
     if [ "$?" != 0 ]
     then
         console "Failed to download from ${stdout_server_path} to ${LOCAL_STDOUT_FILENAME}\n"
+        exit 1
     fi
 
     stderr_server_path="${SS_SPARK_WORK_DIR}/${submissionId}/stderr"
@@ -1076,6 +1077,7 @@ then
     if [ "$?" != 0 ]
     then
         console "Failed to download from ${stderr_server_path} to ${LOCAL_STDERR_FILENAME}\n"
+        exit 1
     fi
 fi
 
@@ -1095,6 +1097,7 @@ if [ "${IS_JOB_ERROR}" = "true" ]
 then
     console "\nERROR: Job failed.\n"
     console "Log file: ${LOG_FILE}\n"
+    exit 1
 else
     endScript
 fi
