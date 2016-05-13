@@ -57,7 +57,7 @@ task("DeleteOutput", type:Delete) {
 }
 
 
-task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
+task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
 
     def cmd = ["../../spark-submit.sh",
                            "--vcap", "../../vcap.json",
@@ -75,12 +75,15 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs], type: Exec) {
                                "'${os_auth_method}'",
                                "'${os_container}'"]
     println cmd.join(" ") // print out command executed for debugging purposes
-    commandLine cmd
+
+    exec {
+        commandLine cmd
+    }
 }
 
 // To test importing (pulling) data, we use the ExamplePush task to create some data in objectstore 
 // for us to import
-task('ExamplePull', dependsOn: ExamplePush, type: Exec) {
+task('ExamplePull', dependsOn: ExamplePush) << {
 
     def cmd = ["../../spark-submit.sh",
                            "--vcap", "../../vcap.json",
@@ -96,7 +99,10 @@ task('ExamplePull', dependsOn: ExamplePush, type: Exec) {
                                "'${os_auth_method}'",
                                "'${os_container}'"]
     println cmd.join(" ") // print out command executed for debugging purposes
-    commandLine cmd
+
+    exec {
+        commandLine cmd
+    }
 }
 
 
