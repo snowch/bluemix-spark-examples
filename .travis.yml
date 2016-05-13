@@ -1,5 +1,6 @@
 language: java
 
-before_install: openssl aes-256-cbc -K $encrypted_e254d58a821d_key -iv $encrypted_e254d58a821d_iv -in connection.properties.enc -out connection.properties -d
-
+before_install:
+      - openssl aes-256-cbc -K $encrypted_5880cf525281_key -iv $encrypted_5880cf525281_iv -in secrets.tar.enc -out secrets.tar -d
+      - tar xvf secrets.tar
 
