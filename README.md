@@ -2,8 +2,6 @@
 
 This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
 
-Note that project has a dependency on the following issue: https://github.com/snowch/bluemix-spark-submit-examples/issues/1
-
 *********************************************************************
 
 ### Pre-requisites
@@ -31,6 +29,13 @@ Note that project has a dependency on the following issue: https://github.com/sn
 - Copy `connection.properties_template` to `connection.properties`
 - Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
 - Follow the instructions in the README.md for your chosen [example](./examples/README.md)
+
+*********************************************************************
+
+### Testing
+
+ - Follow the above setup instructions making sure to add connection properties for all services you wish to test.
+ - Run `./gradlew test`
 
 *********************************************************************
 
