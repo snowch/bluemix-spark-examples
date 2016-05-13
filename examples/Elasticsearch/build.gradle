@@ -1,0 +1,156 @@
+import javax.net.ssl.*
+import groovy.json.JsonSlurper
+
+plugins {
+  // we use the ssh plugin to execute actions on the server over ssh
+  id 'org.hidetake.ssh' version '1.5.0'
+}
+
+Properties props = new Properties()
+props.load(new FileInputStream("$projectDir/../../connection.properties"))
+
+def host = props.elasticsearch_host
+def port = props.elasticsearch_port
+def user = props.elasticsearch_user
+def pass = props.elasticsearch_pass
+
+def slurper = new JsonSlurper()
+def vcaptext = file('../../vcap.json').text
+def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
+assert cluster_master_url != null
+
+// Download the elasticsearch server's certificate and CA certificates and import them into a truststore
+// Elasticsearch will use the truststore to verify the server it is connecting to.  See export_to_elasticsearch.py
+// script for the `es.net.ssl*` configration parameters.
+
+// In a production environment, the truststore would probaly be created manually after veriying the certificate chain
+// for authenticity.
+
+task('CreateTruststore') << {
+
+    delete('./ca_certificate*')
+    delete('./es_certificate*')
+    delete('./truststore.jks')
+    delete('./truststore.jar')
+
+    def certs = []
+
+    def trustManager = [
+        checkClientTrusted: { chain, authType ->  },
+        checkServerTrusted: { chain, authType -> certs.push(chain[0]) },
+        getAcceptedIssuers: { null }
+    ] as X509TrustManager
+
+    def context = SSLContext.getInstance("TLS")
+    context.init(null, [trustManager] as TrustManager[], null)
+    context.socketFactory.createSocket(host, port as int).with {
+        addHandshakeCompletedListener( 
+            [ 
+                handshakeCompleted: { event -> certs.addAll(event.getPeerCertificates()) }   
+            ] as HandshakeCompletedListener
+        )
+        startHandshake()
+        close()
+    }
+
+    // This is required to prevent a ConcurrentModificationException when iterating
+    certs = certs.asImmutable()
+
+    certs.eachWithIndex { cert, idx ->
+
+        (new File("${projectDir}/es_certificate_${idx}")).text = 
+                   "-----BEGIN CERTIFICATE-----\n" + 
+                   "${cert.encoded.encodeBase64(true)}" +
+                   "-----END CERTIFICATE-----"
+
+        ant.exec(executable: 'keytool', dir:'./') {
+            arg(line: "-import -trustcacerts -alias es_certificate_${idx} -file ./es_certificate_${idx} -keystore ./truststore.jks -storepass mypassword -noprompt")
+        }
+    }
+
+    ant.exec(executable: 'jar', dir:'./') {
+        arg(line: '-cf truststore.jar truststore.jks')
+    }
+}
+
+
+task('ExamplePush') {
+
+    dependsOn CreateTruststore
+
+    doLast {
+        def path = "test-${new Date().getTime()}"
+
+        def cmd = ["../../spark-submit.sh",
+                               "--vcap", "../../vcap.json",
+                               "--deploy-mode", "cluster",
+                               "--master", "${cluster_master_url}",
+                               "--jars", "./truststore.jar",
+                               "--files", "./LICENSE",
+                               "--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
+                               "./export_to_elasticsearch.py",
+                                   "'${host}'",
+                                   "'${port}'",
+                                   "'${user}'",
+                                   "'${pass}'",
+                                   "'${path}'"]
+
+        println cmd.join(" ") // print out command executed for debugging purposes
+
+        exec {
+            commandLine cmd
+        }
+
+/* FIXME: use groovy rest to get the data
+
+        exec {
+            // print document
+            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*'".split()
+        }
+       
+        exec {
+            // verify document exists
+            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*' | grep '\"_source\":{\"age\":1,\"name\":\"Alice\"}'".split()
+        }
+*/
+    
+        println "\nSUCCESS >> Successfully exported a document to Elasticsearch"
+    }
+}
+
+task('ExamplePull') {
+
+    // we need to run ExamplePush to create some data in ElasticSearch that 
+    // we will import with this task, so we depend on ExamplePush
+   dependsOn CreateTruststore, ExamplePush
+
+    doLast {
+        def path = "test-${new Date().getTime()}"
+
+        def cmd = ["../../spark-submit.sh",
+                               "--vcap", "../../vcap.json",
+                               "--deploy-mode", "cluster",
+                               "--master", "${cluster_master_url}",
+                               "--jars", "./truststore.jar",
+                               "--files", "./LICENSE",
+                               "--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
+                               "./import_from_elasticsearch.py",
+                                   "'${host}'",
+                                   "'${port}'",
+                                   "'${user}'",
+                                   "'${pass}'",
+                                   "'${path}'"]
+
+        println cmd.join(" ") // print out command executed for debugging purposes
+
+        exec {
+            commandLine cmd
+        }
+
+         println "\nSUCCESS >> Successfully imported a document to Elasticsearch"
+    }
+}
+
+task('Example') {
+    dependsOn ExamplePush, ExamplePull
+}

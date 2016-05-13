@@ -1,0 +1,5 @@
+lib/
+es_certificate*
+ca_certificate*
+truststore.jar
+truststore.jks
