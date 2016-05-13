@@ -32,6 +32,13 @@ This repository contains example projects to help you quickly get started with S
 
 *********************************************************************
 
+### Testing
+
+ - Follow the above setup instructions making sure to add connection properties for all services you wish to test.
+ - Run `./gradlew test`
+
+*********************************************************************
+
 ### Contributing
 
 Contributions are welcome.  Please send a pull request or contact me at chris.snow@uk.ibm.com to get involved.
