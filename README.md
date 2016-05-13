@@ -26,6 +26,7 @@ This repository contains example projects to help you quickly get started with S
 
 - Clone this repository `git clone https://github.com/snowch/bluemix-spark-submit-examples.git`
 - Copy `connection.properties_template` to `connection.properties`
+- Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
 - Follow the instructions in the README.md for your chosen [example](./examples/README.md)
 
 *********************************************************************
