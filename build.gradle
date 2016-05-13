@@ -1,0 +1,90 @@
+import static org.gradle.testfixtures.ProjectBuilder.*
+import static org.gradle.testkit.runner.TaskOutcome.*
+import org.gradle.testfixtures.ProjectBuilder
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.codehaus.groovy:groovy-all:2.0.5'
+        classpath gradleTestKit()
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+def buildProject(proj) {
+    
+    def subTasks = ProjectBuilder.builder()
+                .withProjectDir(file("./examples/${proj}/"))
+                .build()    
+                .getTasksByName("Example", false).first()
+                .getDependsOn()
+
+    subTasks.each { subTask ->
+
+        // ensure we have a clean environment for each test
+        try {
+            GradleRunner.create()
+                    .withProjectDir(file("./examples/${proj}/"))
+                    .withArguments('clean')
+                    .build()
+        } catch (Exception e) {
+            // noop - some projects don't have clean tasks
+        }
+
+        if (!(subTask instanceof org.gradle.api.Task)) {
+            // if this isn't a task, continue looping
+            return false
+        }
+        try {
+            FileWriter writer = new FileWriter("build/test/${proj}-${subTask.name}.txt")
+            GradleRunner.create()
+                    .withProjectDir(file("./examples/${proj}/"))
+                    .forwardStdError(writer)
+                    .forwardStdOutput(writer)
+                    .withArguments([subTask.name, '-PdebugExample'])
+                    .build()
+            writer.close()
+        } catch (Exception e) { 
+            println "Test failed  ${proj}::${subTask.name}"
+            return
+        }
+        println "Test passed  ${proj}::${subTask.name}"
+    }
+}
+
+task testSetup() {
+
+    delete('build')
+    mkdir('build/test')
+}
+
+
+task baseTest(dependsOn: testSetup) << {
+
+    if (!project.hasProperty('summaryOutput')) {
+        println "Running with detailed test output (for summary output, run gradle with -PsummaryOutput)"
+    }
+
+    println "Running base tests"
+
+    [
+      'Objectstore',
+      'Elasticsearch',
+      'Cloudant',
+    ]
+    .each() { proj -> buildProject(proj) }
+
+}
+
+task test(dependsOn: baseTest) << {
+    println "Finished running tests."
+    println "*** Test output can be found in '${projectDir}/build/test/' ***"
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
