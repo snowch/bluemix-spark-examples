@@ -2,8 +2,6 @@
 
 This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
 
-Note that project has a dependency on the following issue: https://github.com/snowch/bluemix-spark-submit-examples/issues/1
-
 *********************************************************************
 
 ### Pre-requisites
