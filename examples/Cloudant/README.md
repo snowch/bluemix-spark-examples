@@ -21,7 +21,7 @@ cl_push_username:changeme
 cl_push_password:changeme
 ```
 
-See the [setup instructions](https://github.com/snowch/biginsight-examples) for more information on creating the connection.propertie file.
+See the [setup instructions](https://github.com/snowch/bluemix-spark-submit-examples) for more information on creating the connection.propertie file.
 
 Run this example by changing into the current directory then executing:
 
@@ -41,9 +41,3 @@ Run this example by changing into the current directory then executing:
 
 *********************************************************************
 
-Note: you can run this script from the top level project folder using the gradle `-p` argument:
-
-```
-./gradlew -p examples/CloudantIntegrationWithSpark ExamplePull
-./gradlew -p examples/CloudantIntegrationWithSpark ExamplePush
-```
