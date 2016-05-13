@@ -11,6 +11,7 @@ Note that project has a dependency on the following issue: https://github.com/sn
 #### Mandatory
 
 - Access to a Bluemix Spark service instance
+- Your local machine is OS/X or Linux
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
 - You are comfortable running commands in the terminal or console

@@ -2,13 +2,13 @@
 
 ##### Export to Cloudant
 
-This example extends the [SparkPythonSsh](./SparkPythonSsh) example to upload the table of wordcounts to Cloudant. A database will be created for you that holds this data.  See the build output for the database name.
+This example processes an Apache LICENSE file and uploads the summary table of wordcounts to Cloudant. A database will be created for you that holds this data.
 
 This pattern is an example of uploading the results of batch processed data to a NoSQL store for random access rather than sequential access.
 
 ##### Import from Cloudant
 
-This example retrieves data from a Cloudant database (examples.cloudant.com) and saves it to HDFS.
+This example runs the Export to Cloudant example, and then retrieves the data from the Export and prints 10 records to standard out.
 
 *********************************************************************
 #### Instructions
@@ -21,7 +21,7 @@ cl_push_username:changeme
 cl_push_password:changeme
 ```
 
-See the [setup instructions](https://github.com/snowch/biginsight-examples) for more information on creating the connection.propertie file.
+See the [setup instructions](https://github.com/snowch/bluemix-spark-submit-examples) for more information on creating the connection.propertie file.
 
 Run this example by changing into the current directory then executing:
 
@@ -41,9 +41,3 @@ Run this example by changing into the current directory then executing:
 
 *********************************************************************
 
-Note: you can run this script from the top level project folder using the gradle `-p` argument:
-
-```
-./gradlew -p examples/CloudantIntegrationWithSpark ExamplePull
-./gradlew -p examples/CloudantIntegrationWithSpark ExamplePush
-```
