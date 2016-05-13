@@ -10,7 +10,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 *********************************************************************
 #### Instructions
 
-Ensure you have followed the Setup Instructions on the [project home page README](https://github.com/snowch/bluemix-spark-submit-examples), then edit your connection.properties file so that it has the following properties that point to your Objectstore container:
+Edit your `../../connection.properties` file so that it has the following properties that point to your Objectstore container:
 
 ```bash
 ### auth url ###
@@ -49,8 +49,6 @@ objectstore_region:dallas
 objectstore_auth_method:keystoneV3
 
 ```
-
-See the [setup instructions](https://github.com/snowch/biginsight-examples) for more information on creating the connection.propertie file.
 
 Run this example by changing into the current directory then executing:
 
