@@ -1,0 +1,10 @@
+{
+  "credentials": {
+    "tenant_id": "",
+    "tenant_id_full": "",
+    "cluster_master_url": "",
+    "instance_id": "",
+    "tenant_secret": "",
+    "plan": ""
+  }
+}
