@@ -76,7 +76,7 @@ task baseTest(dependsOn: testSetup) << {
 
     [
       'Objectstore',
-      'Elasticsearch',
+      //'Elasticsearch',
       'Cloudant',
     ]
     .each() { proj -> buildProject(proj) }
