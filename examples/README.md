@@ -6,13 +6,17 @@ See the README file in each project for instructions how to run the example.
 
 - Push data to an object store [[Objectstore](./Objectstore)]
 - Pull data from a object store [[Objectstore](./Objectstore)]
+- Streaming Push data to object store (TODO)
+- Streaming Pull data from object store (TODO)
 
 *********************************************************************
 
 #### Cloudant 
 
-- Push data to Cloudant [[Cloudant](./Cloudant)]
-- Pull data from Cloudant [[Cloudant](./Cloudant)]
+- Batch Push data to Cloudant [[Cloudant](./Cloudant)]
+- Batch Pull data from Cloudant [[Cloudant](./Cloudant)]
+- Streaming Push data to Cloudant (TODO)
+- Streaming Pull data from Cloudant (TODO)
 
 *********************************************************************
 
@@ -20,6 +24,8 @@ See the README file in each project for instructions how to run the example.
 
 - Push data to dashDB (TODO ... migrate from [here](https://github.com/snowch/biginsight-examples/tree/master/examples/DashDBIntegrationWithSpark))
 - Pull data from dashDB (TODO ... migrate from [here](https://github.com/snowch/biginsight-examples/tree/master/examples/DashDBIntegrationWithSpark))
+- Streaming Push data to dashDB (TODO)
+- Streaming Pull data from dashDB (TODO)
 
 *********************************************************************
 
@@ -27,12 +33,16 @@ See the README file in each project for instructions how to run the example.
 
 - Push data to Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
 - Pull data from Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
+- Streaming Push data to Elasticsearch (TODO)
+- Streaming Pull data from Elasticsearch (TODO)
 
 *********************************************************************
 #### mongoDB 
 
 - Push data to mongoDB on Compose (TODO)
 - Pull data from mongoDB on Compose (TODO)
+- Streaming Push data to mongoDB on Compose (TODO)
+- Streaming Pull data from mongoDB on Compose (TODO)
 
 *********************************************************************
 
@@ -40,6 +50,8 @@ See the README file in each project for instructions how to run the example.
 
 - Push data to Redis, postgres on compose (TODO)
 - Pull data from Redis, postgres on compose (TODO)
+- Streaming Push data to Redis, postgres on Compose (TODO)
+- Streaming Pull data from Redis, postgres on Compose (TODO)
 
 *********************************************************************
 
@@ -47,6 +59,9 @@ See the README file in each project for instructions how to run the example.
 
 - Push data to IBM graph (TODO)
 - Pull data from IBM graph (TODO)
+- Streaming Push data to IBM graph (TODO)
+- Streaming Pull data from IBM graph (TODO)
+
 
 *********************************************************************
 
