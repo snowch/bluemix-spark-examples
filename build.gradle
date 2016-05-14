@@ -55,7 +55,7 @@ def buildProject(proj) {
             writer.close()
         } catch (Exception e) { 
             println "Test failed  ${proj}::${subTask.name}"
-            ext.build_failed = true
+            project.build_failed = true
             return
         }
         println "Test passed  ${proj}::${subTask.name}"
@@ -84,7 +84,7 @@ task baseTest(dependsOn: testSetup) << {
     ]
     .each() { proj -> buildProject(proj) }
 
-    if (ext.build_failed) {
+    if (project.build_failed) {
         throw new GradleException("One or more tests failed")
     }
 }
