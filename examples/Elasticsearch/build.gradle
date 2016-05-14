@@ -1,10 +1,22 @@
 import javax.net.ssl.*
 import groovy.json.JsonSlurper
 
-plugins {
-  // we use the ssh plugin to execute actions on the server over ssh
-  id 'org.hidetake.ssh' version '1.5.0'
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'de.undercouch:gradle-download-task:3.0'
+    }
 }
+
+plugins { 
+    id 'java' 
+    id "de.undercouch.download" version "3.0.0"
+}
+
+import de.undercouch.gradle.tasks.download.Download
 
 Properties props = new Properties()
 props.load(new FileInputStream("$projectDir/../../connection.properties"))
@@ -19,14 +31,35 @@ def vcaptext = file('../../vcap.json').text
 def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
 assert cluster_master_url != null
 
-// Download the elasticsearch server's certificate and CA certificates and import them into a truststore
-// Elasticsearch will use the truststore to verify the server it is connecting to.  See export_to_elasticsearch.py
-// script for the `es.net.ssl*` configration parameters.
+repositories {
+    mavenCentral()
+    jcenter()
+}
 
-// In a production environment, the truststore would probaly be created manually after veriying the certificate chain
-// for authenticity.
+task('SetupLibs', type: Download) {
+    src 'http://repo1.maven.org/maven2/org/elasticsearch/elasticsearch-spark_2.10/2.3.1/elasticsearch-spark_2.10-2.3.1.jar'
+    dest buildDir
+    acceptAnyCertificate true
+    onlyIfNewer true
+    quiet true
+}
+
+task("DeleteOutput", type:Delete) {
+   delete fileTree('./') {
+        include '**/*.log'
+        include '**/stderr_*'
+        include '**/stdout_*'
+    }
+}
 
 task('CreateTruststore') << {
+
+    // Download the elasticsearch server's certificate and CA certificates and import them into a truststore
+    // Elasticsearch will use the truststore to verify the server it is connecting to.  See export_to_elasticsearch.py
+    // script for the `es.net.ssl*` configration parameters.
+
+    // In a production environment, the truststore would probaly be created manually after veriying the certificate chain
+    // for authenticity.
 
     delete('./ca_certificate*')
     delete('./es_certificate*')
@@ -76,7 +109,7 @@ task('CreateTruststore') << {
 
 task('ExamplePush') {
 
-    dependsOn CreateTruststore
+    dependsOn DeleteOutput, CreateTruststore, SetupLibs
 
     doLast {
         def path = "test-${new Date().getTime()}"
@@ -85,9 +118,9 @@ task('ExamplePush') {
                                "--vcap", "../../vcap.json",
                                "--deploy-mode", "cluster",
                                "--master", "${cluster_master_url}",
-                               "--jars", "./truststore.jar",
+                               "--jars", "./truststore.jar,./build/elasticsearch-spark_2.10-2.3.1.jar",
                                "--files", "./LICENSE",
-                               "--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
+                               //"--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
                                "./export_to_elasticsearch.py",
                                    "'${host}'",
                                    "'${port}'",
@@ -101,18 +134,17 @@ task('ExamplePush') {
             commandLine cmd
         }
 
-/* FIXME: use groovy rest to get the data
-
-        exec {
-            // print document
-            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*'".split()
-        }
-       
-        exec {
-            // verify document exists
-            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*' | grep '\"_source\":{\"age\":1,\"name\":\"Alice\"}'".split()
-        }
-*/
+// FIXME: use groovy rest to get the data
+//
+//        exec {
+//            // print document
+//            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*'".split()
+//        }
+//       
+//        exec {
+//            // verify document exists
+//            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*' | grep '\"_source\":{\"age\":1,\"name\":\"Alice\"}'".split()
+//        }
     
         println "\nSUCCESS >> Successfully exported a document to Elasticsearch"
     }
@@ -122,7 +154,7 @@ task('ExamplePull') {
 
     // we need to run ExamplePush to create some data in ElasticSearch that 
     // we will import with this task, so we depend on ExamplePush
-   dependsOn CreateTruststore, ExamplePush
+   dependsOn ExamplePush
 
     doLast {
         def path = "test-${new Date().getTime()}"
@@ -131,9 +163,9 @@ task('ExamplePull') {
                                "--vcap", "../../vcap.json",
                                "--deploy-mode", "cluster",
                                "--master", "${cluster_master_url}",
-                               "--jars", "./truststore.jar",
+                               "--jars", "./truststore.jar,./build/elasticsearch-spark_2.10-2.3.1.jar",
                                "--files", "./LICENSE",
-                               "--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
+                               //"--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
                                "./import_from_elasticsearch.py",
                                    "'${host}'",
                                    "'${port}'",
