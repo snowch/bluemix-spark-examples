@@ -778,7 +778,7 @@ do
         *)
             if [[ "${key}" =~ ^--.* ]] &&  [[ -z "${APP_MAIN}" ]]; then
                 printf "Error: Unrecognized option: ${key} \n"
-                printUsage
+                exit 1
             else
                 if [ -z "${APP_MAIN}" ]
                 then
