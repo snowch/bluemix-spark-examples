@@ -4,6 +4,8 @@
 
 This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
 
+Also see [this project](https://github.com/snowch/biginsight-examples/blob/master/README.md) for example projects for IBM BigInsights for Apache Hadoop.
+
 *********************************************************************
 
 ### Pre-requisites
