@@ -15,7 +15,7 @@ buildscript {
 
 plugins { id 'java' }
 
-def build_failed = false
+ext.build_failed = false
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +55,8 @@ def buildProject(proj) {
             writer.close()
         } catch (Exception e) { 
             println "Test failed  ${proj}::${subTask.name}"
-            build_failed = true
+            ext.build_failed = true
+            return
         }
         println "Test passed  ${proj}::${subTask.name}"
     }
@@ -83,7 +84,7 @@ task baseTest(dependsOn: testSetup) << {
     ]
     .each() { proj -> buildProject(proj) }
 
-    if (build_failed) {
+    if (ext.build_failed) {
         throw new GradleException("One or more tests failed")
     }
 }
