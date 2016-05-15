@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/snowch/bluemix-spark-submit-examples.png)](https://travis-ci.org/snowch/bluemix-spark-submit-examples)
 
-This repository contains example projects to help you quickly get started with Spark as a Service, spark-submit.sh. 
+This repository contains example projects to help you quickly get started with Spark as a Service, using spark-submit.sh. 
+
+Also see [this repository](https://github.com/snowch/biginsight-examples/blob/master/README.md) for example projects for IBM BigInsights for Apache Hadoop.
 
 *********************************************************************
 
@@ -37,7 +39,7 @@ This repository contains example projects to help you quickly get started with S
 ### Testing
 
  - Follow the above setup instructions making sure to add connection properties for all services you wish to test.
- - Run `./gradlew test`
+ - Run `./gradlew check`
 
 *********************************************************************
 
