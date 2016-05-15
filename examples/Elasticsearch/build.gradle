@@ -1,4 +1,6 @@
 import javax.net.ssl.*
+import groovyx.net.http.RESTClient
+import static groovyx.net.http.ContentType.JSON
 import groovy.json.JsonSlurper
 
 buildscript {
@@ -8,6 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'de.undercouch:gradle-download-task:3.0'
+        classpath 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     }
 }
 
@@ -106,7 +109,6 @@ task('CreateTruststore') << {
     }
 }
 
-
 task('ExamplePush') {
 
     dependsOn DeleteOutput, CreateTruststore, SetupLibs
@@ -119,8 +121,6 @@ task('ExamplePush') {
                                "--deploy-mode", "cluster",
                                "--master", "${cluster_master_url}",
                                "--jars", "./truststore.jar,./build/elasticsearch-spark_2.10-2.3.1.jar",
-                               "--files", "./LICENSE",
-                               //"--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
                                "./export_to_elasticsearch.py",
                                    "'${host}'",
                                    "'${port}'",
@@ -134,17 +134,17 @@ task('ExamplePush') {
             commandLine cmd
         }
 
-// FIXME: use groovy rest to get the data
-//
-//        exec {
-//            // print document
-//            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*'".split()
-//        }
-//       
-//        exec {
-//            // verify document exists
-//            commandLine "curl -s -u ${user}:${pass} 'https://${host}:${port}/spark/${path}/_search?pretty=true&q=*:*' | grep '\"_source\":{\"age\":1,\"name\":\"Alice\"}'".split()
-//        }
+        // verify document was created
+        def client = new RESTClient( "https://${host}:${port}/")
+        client.ignoreSSLIssues()
+        client.headers['Authorization'] = 'Basic ' + "${user}:${pass}".getBytes('iso-8859-1').encodeBase64()
+        
+        def resp = client.get( 
+                        path : "spark/${path}/_count", 
+                        requestContentType : 'application/json'
+                        )
+        assert resp.status == 200
+        assert resp.data.count == 1
     
         println "\nSUCCESS >> Successfully exported a document to Elasticsearch"
     }
@@ -164,8 +164,6 @@ task('ExamplePull') {
                                "--deploy-mode", "cluster",
                                "--master", "${cluster_master_url}",
                                "--jars", "./truststore.jar,./build/elasticsearch-spark_2.10-2.3.1.jar",
-                               "--files", "./LICENSE",
-                               //"--packages", "org.elasticsearch:elasticsearch-spark_2.10:2.3.0",
                                "./import_from_elasticsearch.py",
                                    "'${host}'",
                                    "'${port}'",
