@@ -12,7 +12,7 @@ Also see [this repository](https://github.com/snowch/biginsight-examples/blob/ma
 
 #### Mandatory
 
-- Access to a Bluemix Spark service instance
+- Access to a Bluemix Spark service instance (e.g. free tier)
 - Your local machine is OS/X or Linux
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
