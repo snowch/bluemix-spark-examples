@@ -22,8 +22,8 @@ See the README file in each project for instructions how to run the example.
 
 #### dashDB 
 
-- Push data to dashDB (TODO ... migrate from [here](https://github.com/snowch/biginsight-examples/tree/master/examples/DashDBIntegrationWithSpark))
-- Pull data from dashDB (TODO ... migrate from [here](https://github.com/snowch/biginsight-examples/tree/master/examples/DashDBIntegrationWithSpark))
+- Push data to dashDB [[DashDB](./DashDB)]
+- Pull data from dashDB [[DashDB](./DashDB)]
 - Streaming Push data to dashDB (TODO)
 - Streaming Pull data from dashDB (TODO)
 
