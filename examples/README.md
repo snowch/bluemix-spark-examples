@@ -46,12 +46,21 @@ See the README file in each project for instructions how to run the example.
 
 *********************************************************************
 
-#### Redis, postgres on compose
+#### Postgres on compose
 
-- Push data to Redis, postgres on compose (TODO)
-- Pull data from Redis, postgres on compose (TODO)
-- Streaming Push data to Redis, postgres on Compose (TODO)
-- Streaming Pull data from Redis, postgres on Compose (TODO)
+- Push data to Postgres on compose (TODO)
+- Pull data from Postgres on compose (TODO)
+- Streaming Push data to Postgres on Compose (TODO)
+- Streaming Pull data from Postgres on Compose (TODO)
+
+*********************************************************************
+
+#### Redis on compose
+
+- Push data to Redis on compose (TODO)
+- Pull data from Redis on compose (TODO)
+- Streaming Push data to Redis on Compose (TODO)
+- Streaming Pull data from Redi on Compose (TODO)
 
 *********************************************************************
 
