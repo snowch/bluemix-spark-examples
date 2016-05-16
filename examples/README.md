@@ -84,10 +84,13 @@ See the README file in each project for instructions how to run the example.
 
 (TODO)
 
+*********************************************************************
+
 #### Insights for Weather
 
 (TODO)
 
+*********************************************************************
 
 #### Additional scripts
 
