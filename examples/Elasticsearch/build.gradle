@@ -29,6 +29,8 @@ def port = props.elasticsearch_port
 def user = props.elasticsearch_user
 def pass = props.elasticsearch_pass
 
+def path = "test-${new Date().getTime()}"
+
 def slurper = new JsonSlurper()
 def vcaptext = file('../../vcap.json').text
 def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
@@ -114,7 +116,6 @@ task('ExamplePush') {
     dependsOn DeleteOutput, CreateTruststore, SetupLibs
 
     doLast {
-        def path = "test-${new Date().getTime()}"
 
         def cmd = ["../../spark-submit.sh",
                                "--vcap", "../../vcap.json",
@@ -138,14 +139,14 @@ task('ExamplePush') {
         def client = new RESTClient( "https://${host}:${port}/")
         client.ignoreSSLIssues()
         client.headers['Authorization'] = 'Basic ' + "${user}:${pass}".getBytes('iso-8859-1').encodeBase64()
-        
+
         def resp = client.get( 
                         path : "spark/${path}/_count", 
                         requestContentType : 'application/json'
                         )
         assert resp.status == 200
         assert resp.data.count == 2
-    
+
         println "\nSUCCESS >> Successfully exported a document to Elasticsearch"
     }
 }
@@ -157,8 +158,6 @@ task('ExamplePull') {
    dependsOn ExamplePush
 
     doLast {
-        def path = "test-${new Date().getTime()}"
-
         def cmd = ["../../spark-submit.sh",
                                "--vcap", "../../vcap.json",
                                "--deploy-mode", "cluster",
