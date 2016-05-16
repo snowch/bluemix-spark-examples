@@ -1,6 +1,6 @@
 *********************************************************************
 
-[![Build Status](https://travis-ci.org/snowch/bluemix-spark-submit-examples.png)](https://travis-ci.org/snowch/bluemix-spark-submit-examples)
+[![Build Status](https://travis-ci.org/snowch/bluemix-spark-submit-examples.png)](https://travis-ci.org/snowch/bluemix-spark-submit-examples) (click this icon to view the build output and the test results)
 
 This repository contains example projects to help you quickly get started with Spark as a Service, using spark-submit.sh. 
 
