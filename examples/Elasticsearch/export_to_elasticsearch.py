@@ -51,7 +51,10 @@ if __name__ == "__main__":
     sqlContext = SQLContext(sc)
 
     # create a test document
-    d = [{'name': 'Alice', 'age': 1}]
+    d = [
+            {'name': 'Alice', 'age': 1},
+            {'name': 'Bob', 'age': 2}
+        ]    
     df = sqlContext.createDataFrame(d)
 
     # persist it to elasticsearch

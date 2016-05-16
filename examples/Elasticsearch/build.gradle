@@ -144,7 +144,7 @@ task('ExamplePush') {
                         requestContentType : 'application/json'
                         )
         assert resp.status == 200
-        assert resp.data.count == 1
+        assert resp.data.count == 2
     
         println "\nSUCCESS >> Successfully exported a document to Elasticsearch"
     }
