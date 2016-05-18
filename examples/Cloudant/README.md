@@ -23,7 +23,7 @@ cl_push_password:changeme
 
 See the [setup instructions](../../README.md) for more information on creating the connection.propertie file.
 
-Run this example by changing into the current directory then executing:
+Run this example by changing into the `./examples/Cloudant` directory then executing:
 
 - on *nix using:
 
