@@ -45,28 +45,18 @@ Ensure you have followed the Setup Instructions on the [project home page README
 dashdb_pull_jdbc_url:jdbc:db2://changeme:50001/BLUDB:user=changeme;password=changeme;sslConnection=true;
 ```
 
-Run this example by changing into the current directory then executing:
+Run this example by changing into the `./examples/DashDB` directory then executing:
 
 - on *nix using:
 
 ```
-../../gradlew ExamplePull
-../../gradlew ExamplePush
+./gradlew ExamplePull
+./gradlew ExamplePush
 ```
 
 - on Windows using:
 
 ```
-../../gradlew.bat ExamplePull
-../../gradlew.bat ExamplePush
+gradlew.bat ExamplePull
+gradlew.bat ExamplePush
 ```
-
-*********************************************************************
-
-Note: you can run this script from the top level project folder using the gradle `-p` argument:
-
-```
-./gradlew -p examples/DashDBPullWithSpark ExamplePull
-./gradlew -p examples/DashDBPullWithSpark ExamplePush
-```
-*********************************************************************
