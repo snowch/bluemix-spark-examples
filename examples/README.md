@@ -4,8 +4,8 @@ See the README file in each project for instructions how to run the example.
 
 #### Object Store (e.g. Bluemix Objectstore or Softlayer Objectstore)
 
-- Push data to an object store [[Objectstore](./Objectstore)]
-- Pull data from a object store [[Objectstore](./Objectstore)]
+- Batch Push data to an object store [[Objectstore](./Objectstore)]
+- Batch Pull data from a object store [[Objectstore](./Objectstore)]
 - Streaming Push data to object store (TODO)
 - Streaming Pull data from object store (TODO)
 
@@ -22,8 +22,8 @@ See the README file in each project for instructions how to run the example.
 
 #### dashDB 
 
-- Push data to dashDB [[DashDB](./DashDB)]
-- Pull data from dashDB [[DashDB](./DashDB)]
+- Batch Push data to dashDB [[DashDB](./DashDB)]
+- Batch Pull data from dashDB [[DashDB](./DashDB)]
 - Streaming Push data to dashDB (TODO)
 - Streaming Pull data from dashDB (TODO)
 
@@ -31,40 +31,62 @@ See the README file in each project for instructions how to run the example.
 
 #### Elasticsearch 
 
-- Push data to Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
-- Pull data from Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
+- Batch Push data to Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
+- Batch Pull data from Elasticsearch on compose [[Elasticsearch](./Elasticsearch)]
 - Streaming Push data to Elasticsearch (TODO)
 - Streaming Pull data from Elasticsearch (TODO)
 
 *********************************************************************
 #### mongoDB 
 
-- Push data to mongoDB on Compose (TODO)
-- Pull data from mongoDB on Compose (TODO)
+- Batch Push data to mongoDB on Compose (TODO)
+- Batch Pull data from mongoDB on Compose (TODO)
 - Streaming Push data to mongoDB on Compose (TODO)
 - Streaming Pull data from mongoDB on Compose (TODO)
 
 *********************************************************************
 
-#### Redis, postgres on compose
+#### Postgres on compose
 
-- Push data to Redis, postgres on compose (TODO)
-- Pull data from Redis, postgres on compose (TODO)
-- Streaming Push data to Redis, postgres on Compose (TODO)
-- Streaming Pull data from Redis, postgres on Compose (TODO)
+- Batch Push data to Postgres on compose (TODO)
+- Batch Pull data from Postgres on compose (TODO)
+- Streaming Push data to Postgres on Compose (TODO)
+- Streaming Pull data from Postgres on Compose (TODO)
+
+*********************************************************************
+
+#### Redis on compose
+
+- Batch Push data to Redis on compose (TODO)
+- Batch Pull data from Redis on compose (TODO)
+- Streaming Push data to Redis on Compose (TODO)
+- Streaming Pull data from Redi on Compose (TODO)
 
 *********************************************************************
 
 #### IBM graph
 
-- Push data to IBM graph (TODO)
-- Pull data from IBM graph (TODO)
+- Batch Push data to IBM graph (TODO)
+- Batch Pull data from IBM graph (TODO)
 - Streaming Push data to IBM graph (TODO)
 - Streaming Pull data from IBM graph (TODO)
 
 *********************************************************************
 
 #### Apache Camel
+
+(TODO)
+
+*********************************************************************
+
+
+#### Insights for Twitter
+
+(TODO)
+
+*********************************************************************
+
+#### Insights for Weather
 
 (TODO)
 
