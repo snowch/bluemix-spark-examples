@@ -25,7 +25,7 @@ This example was created and tested on a [Compose](https://compose.io/) Elastics
 *********************************************************************
 #### Instructions
 
-Ensure you have followed the Setup Instructions on the [project home page README](https://github.com/snowch/biginsight-examples), then edit your connection.properties file so that it has the following properties that point to your Elasticsearch server:
+Ensure you have followed the Setup Instructions on the [project home page README](../../README.md), then edit your connection.properties file so that it has the following properties that point to your Elasticsearch server:
 
 ```
 ################################################################################
@@ -38,20 +38,20 @@ elasticsearch_user:changeme
 elasticsearch_pass:changeme
 ```
 
-Run this example by changing into the current directory then executing:
+Run this example by changing into the `./examples/Elasticsearch` directory then executing:
 
 - on *nix using:
 
 ```
-../../gradlew ExamplePush
-../../gradlew ExamplePull
+./gradlew ExamplePush
+./gradlew ExamplePull
 ```
 
 - on Windows using:
 
 ```
-../../gradlew.bat ExamplePush
-../../gradlew.bat ExamplePull
+gradlew.bat ExamplePush
+gradlew.bat ExamplePull
 ```
 
 *********************************************************************

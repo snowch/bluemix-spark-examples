@@ -21,22 +21,22 @@ cl_push_username:changeme
 cl_push_password:changeme
 ```
 
-See the [setup instructions](https://github.com/snowch/bluemix-spark-submit-examples) for more information on creating the connection.propertie file.
+See the [setup instructions](../../README.md) for more information on creating the connection.propertie file.
 
-Run this example by changing into the current directory then executing:
+Run this example by changing into the `./examples/Cloudant` directory then executing:
 
 - on *nix using:
 
 ```
-../../gradlew ExamplePull
-../../gradlew ExamplePush
+./gradlew ExamplePull
+./gradlew ExamplePush
 ```
 
 - on Windows using:
 
 ```
-../../gradlew.bat ExamplePull
-../../gradlew.bat ExamplePush
+gradlew.bat ExamplePull
+gradlew.bat ExamplePush
 ```
 
 *********************************************************************
