@@ -31,15 +31,13 @@ Take a look at the [build.gradle](./build.gradle) file, starting with the Exampl
 *********************************************************************
 #### Instructions
 
-*NOTE:*
-
-Basic clusters do not have the jar files available.  As a workaround, manually obtain a copy of the following jars and place them in the 'downloads' folder.  See [here](https://github.com/snowch/biginsight-examples/issues/17) for more info.
+Manually obtain a copy of the following jars and place them in the `./lib` folder:  
 
 - db2jcc.jar
 - db2jcc4.jar
 - db2jcc_license_cu.jar
 
-Ensure you have followed the Setup Instructions on the [project home page README](https://github.com/snowch/biginsight-examples), then edit your connection.properties file so that it has a property `dashdb_pull_jdbc_url` that points to your dashDB account:
+Ensure you have followed the Setup Instructions on the [project home page README](../../README.md), then edit your connection.properties file so that it has a property `dashdb_pull_jdbc_url` that points to your dashDB account:
 
 ```
 dashdb_pull_jdbc_url:jdbc:db2://changeme:50001/BLUDB:user=changeme;password=changeme;sslConnection=true;
