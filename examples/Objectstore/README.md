@@ -50,19 +50,19 @@ objectstore_auth_method:keystoneV3
 
 ```
 
-Run this example by changing into the current directory then executing:
+Run this example by changing into the the directory `./examples/Objectstore` then executing:
 
 - on *nix using:
 
 ```
-../../gradlew ExamplePush
-../../gradlew ExamplePull
+./gradlew ExamplePush
+./gradlew ExamplePull
 ```
 
 - on Windows using:
 
 ```
-../../gradlew.bat ExamplePush
-../../gradlew.bat ExamplePull
+gradlew.bat ExamplePush
+gradlew.bat ExamplePull
 ```
 
