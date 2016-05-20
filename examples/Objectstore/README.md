@@ -10,7 +10,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 *********************************************************************
 #### Instructions
 
-Edit your `../../connection.properties` file so that it has the following properties that point to your Objectstore container:
+Complete the Setup Instructions in the main project [README](../../READM.md).  Next edit the `connection.properties` file in the main project folder so that it has the following properties that point to your Objectstore container:
 
 ```bash
 ### auth url ###
@@ -50,19 +50,10 @@ objectstore_auth_method:keystoneV3
 
 ```
 
-Run this example by changing into the the directory `./examples/Objectstore` then executing:
-
-- on *nix using:
+Run this example by changing into this directory `./examples/Objectstore` then executing:
 
 ```
 ./gradlew ExamplePush
 ./gradlew ExamplePull
-```
-
-- on Windows using:
-
-```
-gradlew.bat ExamplePush
-gradlew.bat ExamplePull
 ```
 
