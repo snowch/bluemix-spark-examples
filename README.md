@@ -13,7 +13,7 @@ Also see [this repository](https://github.com/snowch/biginsight-examples/blob/ma
 #### Mandatory
 
 - Access to a Bluemix Spark service instance (e.g. free tier)
-- Your local machine is OS/X or Linux
+- Your local machine is OS/X or Linux (Cygwin *should* work on Windows - see [here](http://stackoverflow.com/questions/37315709/bluemix-spark-as-a-service-how-to-run-spark-submit-sh-with-cygwin))
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
 - You are comfortable running commands in the terminal or console
