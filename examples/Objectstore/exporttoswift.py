@@ -21,6 +21,8 @@ import re
 import sys
 from operator import add
 
+from base64 import b64decode
+
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
 
@@ -30,13 +32,13 @@ if __name__ == "__main__":
         exit(-1)
 
     license_filename = sys.argv[1]
-    os_auth_url      = sys.argv[2]
-    os_tenant        = sys.argv[3]
-    os_username      = sys.argv[4]
-    os_password      = sys.argv[5]
-    os_region        = sys.argv[6]
-    os_auth_method   = sys.argv[7]
-    os_container     = sys.argv[8]
+    os_auth_url      = b64decode(sys.argv[2])
+    os_tenant        = b64decode(sys.argv[3])
+    os_username      = b64decode(sys.argv[4])
+    os_password      = b64decode(sys.argv[5])
+    os_region        = b64decode(sys.argv[6])
+    os_auth_method   = b64decode(sys.argv[7])
+    os_container     = b64decode(sys.argv[8])
 
     sc = SparkContext()
 

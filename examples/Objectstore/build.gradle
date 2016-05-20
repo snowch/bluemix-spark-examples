@@ -56,6 +56,9 @@ task("DeleteOutput", type:Delete) {
     }
 }
 
+def encode(val) {
+    return val.getBytes('UTF-8').encodeBase64()
+}
 
 task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
 
@@ -67,13 +70,13 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
                            "--files", "./LICENSE",
                            "./exporttoswift.py",
                                "file://LICENSE",
-                               "'${os_auth_url}'",
-                               "'${os_tenant}'",
-                               "'${os_username}'",
-                               "'${os_password}'",
-                               "'${os_region}'",
-                               "'${os_auth_method}'",
-                               "'${os_container}'"]
+                               encode(os_auth_url),
+                               encode(os_tenant),
+                               encode(os_username),
+                               encode(os_password),
+                               encode(os_region),
+                               encode(os_auth_method),
+                               encode(os_container)]
     println cmd.join(" ") // print out command executed for debugging purposes
 
     exec {
@@ -91,13 +94,13 @@ task('ExamplePull', dependsOn: ExamplePush) << {
                            "--master", "${cluster_master_url}",
                            "--jars", "./build/libs/stocator-library-with-dependencies.jar",
                            "./importfromswift.py",
-                               "'${os_auth_url}'",
-                               "'${os_tenant}'",
-                               "'${os_username}'",
-                               "'${os_password}'",
-                               "'${os_region}'",
-                               "'${os_auth_method}'",
-                               "'${os_container}'"]
+                               encode(os_auth_url),
+                               encode(os_tenant),
+                               encode(os_username),
+                               encode(os_password),
+                               encode(os_region),
+                               encode(os_auth_method),
+                               encode(os_container)]
     println cmd.join(" ") // print out command executed for debugging purposes
 
     exec {
