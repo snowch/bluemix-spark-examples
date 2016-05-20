@@ -10,7 +10,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 *********************************************************************
 #### Instructions
 
-Complete the Setup Instructions in the main project [README](../../READM.md).  Next edit the `connection.properties` file in the main project folder so that it has the following properties that point to your Objectstore container:
+Complete the Setup Instructions in the main project [README](../../README.md).  Next edit the `connection.properties` file in the main project folder so that it has the following properties that point to your Objectstore container:
 
 ```bash
 ### auth url ###
