@@ -5,7 +5,7 @@ This project has two examples that use the high performance [Stocator](https://g
 - process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container (ExamplePush)
 - connect to objectstore and pull the summary word count data into the spark environment (ExamplePull)
 
-The examples are run by gradle (you do *not* need to know or install gradle).  Gradle uses a simple script, [build.gradle](./build.gradle) that contains two main tasks 'ExamplePush' and 'ExamplePull'.  Inspect these tasks in build.gradle for details - you do *not* need to have experience with gradle to understand this file.
+The examples are run by gradle (you do *not* need to know or install gradle).  Gradle uses a simple script, [build.gradle](./build.gradle) that contains two main tasks 'ExamplePush' and 'ExamplePull'.  Inspect these tasks in build.gradle for details - you do *not* need to have experience with gradle to understand this file.  Read the comments to understand what is being done.
 
 The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importfromswift.py](./importfromswift.py).
 
