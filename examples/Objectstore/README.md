@@ -9,7 +9,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 
 *********************************************************************
 
-### Pre-requisites
+#### Pre-requisites
 
 - Access to a Bluemix Spark service instance (e.g. free tier)
 - Objectstore container details (e.g. Free tier on Bluemix, or Softlayer account)
@@ -19,7 +19,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 
 *********************************************************************
 
-### Setup Instructions
+#### Setup Instructions
 
 - Clone this repository `git clone https://github.com/snowch/bluemix-spark-examples.git`
 - Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
