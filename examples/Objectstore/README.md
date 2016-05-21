@@ -19,7 +19,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 
 *********************************************************************
 
-#### Setup Instructions
+#### Instructions
 
 - Clone this repository `git clone https://github.com/snowch/bluemix-spark-examples.git`
 - Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
@@ -64,7 +64,7 @@ objectstore_auth_method:keystoneV3
 
 ```
 
-Finally, run this example by changing into this directory (`./examples/Objectstore`) and executing:
+- Finally, run this example by changing into this directory (`./examples/Objectstore`) and executing:
 
 ```
 ./gradlew ExamplePush
