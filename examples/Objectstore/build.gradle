@@ -1,6 +1,8 @@
 import groovy.json.JsonSlurper
 
-// use a thirdparty utility to download the spark package
+//////////////////////////////////////////////////////////////////////////
+// Declare that we want to use a gradle plugin to download the spark package
+
 buildscript {
     repositories {
         mavenCentral()
@@ -18,7 +20,9 @@ plugins {
 
 import de.undercouch.gradle.tasks.download.Download
 
+//////////////////////////////////////////////////////////////////////////
 // get the objectstore connection details from connection.properties
+
 def props = new Properties()
 props.load(new FileInputStream("$projectDir/../../connection.properties"))
 
@@ -28,15 +32,21 @@ def os_username    = props.objectstore_username
 def os_password    = props.objectstore_password
 def os_region      = props.objectstore_region
 def os_auth_method = props.objectstore_auth_method
+
+// create a unique name for the container so we don't accidentally overwrite existing data
 def os_container   = "${new Date().getTime()}"
 
+//////////////////////////////////////////////////////////////////////////
 // read the vcap.json file and extract the cluster_master_url
+
 def slurper = new JsonSlurper()
 def vcaptext = file('../../vcap.json').text
 def cluster_master_url = slurper.parseText( vcaptext ).credentials.cluster_master_url
 assert cluster_master_url != null
 
+////////////////////////////////////////////////////////////////////////////
 // download the spark package for object store access
+
 task('SetupLibs', type: Download) {
     src 'http://repo1.maven.org/maven2/com/ibm/stocator/stocator/1.0.2/stocator-1.0.2.jar'
     dest buildDir
@@ -45,6 +55,8 @@ task('SetupLibs', type: Download) {
     quiet true
 }
 
+//////////////////////////////////////////////////////////////////////////
+// remove output from any previous runs
 
 task("DeleteOutput", type:Delete) {
    delete fileTree('./') {
@@ -54,9 +66,22 @@ task("DeleteOutput", type:Delete) {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Some issues were encountered with some arguments that we pass to the 
+// spark Python script, presumably because the arguments contained special 
+// characters.  Base64 encoding these arguments before sending gets around
+// this issue, and the spark Python script only has to base64 decode the
+// arguments before it uses them
+
 def encode(val) {
     return val.getBytes('UTF-8').encodeBase64()
 }
+
+//////////////////////////////////////////////////////////////////////////
+// This task executes spark-submit.sh. An Apache license file is passed 
+// which the spark script performs a word count on.  The spark script 
+// then saves the word counts to the object store defined in
+// connection.properties
 
 task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
 
@@ -82,8 +107,13 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
     }
 }
 
-// To test importing (pulling) data, we use the ExamplePush task to create some data in objectstore 
-// for us to import
+//////////////////////////////////////////////////////////////////////////
+// To test importing (pulling) data, we use the ExamplePush task to create 
+// the word counts and save in objectstore.  The importfromswift.py script
+// then reads that data and prints some records to standard out.  The 
+// output can be seen in the file stdout_xxxxx file that is created by
+// spark-submit.sh
+
 task('ExamplePull', dependsOn: ExamplePush) << {
 
     def cmd = ["../../spark-submit.sh",
@@ -106,6 +136,8 @@ task('ExamplePull', dependsOn: ExamplePush) << {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
+// This task will run both the Push and Pull examples.
 
 task('Example') {
     dependsOn ExamplePush, ExamplePull
