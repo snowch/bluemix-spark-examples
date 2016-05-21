@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/snowch/bluemix-spark-examples.png)](https://travis-ci.org/snowch/bluemix-spark-examples) 
+(click the above icon and then click View Log to view the build output and the test results)
+
 #### Overview
 
 This project has two examples that use the high performance [Stocator](https://github.com/SparkTC/stocator) Objectstore spark library.  The examples:
