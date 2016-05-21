@@ -2,10 +2,13 @@
 
 This example uses the [Stocator](https://github.com/SparkTC/stocator) spark library to:
 
-- process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container
-- connect to objectstore and pull the summary word count data into the spark environment
+- process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container (ExamplePush)
+- connect to objectstore and pull the summary word count data into the spark environment (ExamplePull)
 
 The [build.gradle](./build.gradle) script contains two main tasks for the above behavior, with task names 'ExamplePush' and 'ExamplePull'.  Inspect these tasks in build.gradle for details - you do *not* need to have experience with gradle to understand this file.
+
+The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importfromswift.py](./importfromswift.py).
+
 
 *********************************************************************
 
@@ -13,7 +16,7 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 
 - Access to a Bluemix Spark service instance (e.g. free tier)
 - Objectstore container details (e.g. Free tier on Bluemix, or Softlayer account)
-- Your local machine is OS/X or Linux (Cygwin *should* work on Windows - see [here](http://stackoverflow.com/questions/37315709/bluemix-spark-as-a-service-how-to-run-spark-submit-sh-with-cygwin))
+- Your local machine is OS/X or Linux (if you are using Windows, Cygwin *should* work - see [here](http://stackoverflow.com/questions/37315709/bluemix-spark-as-a-service-how-to-run-spark-submit-sh-with-cygwin))
 - Java 8 JDK installed on your local machine
 - Git client installed on your local machine
 
