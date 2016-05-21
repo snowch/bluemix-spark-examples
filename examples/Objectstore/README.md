@@ -1,6 +1,6 @@
 #### Overview
 
-This project has two examples that use the high performance [Stocator](https://github.com/SparkTC/stocator) Objectstore spark library.  The examples are:
+This project has two examples that use the high performance [Stocator](https://github.com/SparkTC/stocator) Objectstore spark library.  The examples:
 
 - process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container (ExamplePush)
 - connect to objectstore and pull the summary word count data into the spark environment (ExamplePull)
