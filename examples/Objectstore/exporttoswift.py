@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     # some arguments were getting interpreted by the shell before they got passed to this script
     # were therefore corrupted by the time we read them.  To resolve this, we base64 encode the
-    # arguments before passing them in.  This means we need to decide them before we can use them.
+    # arguments before passing them in.  This means we need to decode them before we can use them.
 
     license_filename = sys.argv[1]
     os_auth_url      = b64decode(sys.argv[2])
