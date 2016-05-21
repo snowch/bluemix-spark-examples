@@ -89,4 +89,4 @@ Or
 ./gradlew ExamplePull
 ```
 
-*NOTE:* The connection.properties and vcap.json files are stored in the top level folder and not in the examples/Objectstore folder because the those files are shared between all of the examples.
+**NOTE:** The connection.properties and vcap.json files are stored in the top level folder and not in the examples/Objectstore folder because those files are shared between all of the examples.
