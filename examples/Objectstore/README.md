@@ -25,9 +25,10 @@ The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importf
 #### Instructions
 
 - Clone this repository `git clone https://github.com/snowch/bluemix-spark-examples.git`
-- Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
-- Copy `connection.properties_template` to `connection.properties`
-- Next edit the `connection.properties` file in the main project folder so that it has the following properties for your Objectstore service:
+- Change into the cloned folder `cd bluemix-spark-examples`
+- Save your `vcap.json` into this folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.blue mix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more info)
+- Copy connection.properties_template `cp connection.properties_template connection.properties`
+- Next edit the `connection.properties` file with values for your Objectstore service:
 
 ```bash
 ### auth url ###
