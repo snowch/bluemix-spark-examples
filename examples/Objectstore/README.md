@@ -17,8 +17,8 @@ The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importf
 - Access to a Bluemix Spark service instance (e.g. free tier)
 - Objectstore container details (e.g. Free tier on Bluemix, or Softlayer account)
 - Your local machine is OS/X or Linux (if you are using Windows, Cygwin *should* work - see [here](http://stackoverflow.com/questions/37315709/bluemix-spark-as-a-service-how-to-run-spark-submit-sh-with-cygwin))
-- Java 8 JDK installed on your local machine
-- Git client installed on your local machine
+- Java 8 JDK installed on your local machine (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- Git client installed on your local machine (https://git-scm.com/downloads)
 
 *********************************************************************
 
