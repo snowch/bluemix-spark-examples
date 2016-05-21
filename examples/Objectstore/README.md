@@ -68,7 +68,7 @@ objectstore_auth_method:keystoneV3
 
 ```
 
-- Finally, run this example by changing into this directory (`./examples/Objectstore`) and executing:
+- Finally, run this example by changing into this directory (`cd ./examples/Objectstore`) and executing:
 
 ```
 ./gradlew ExamplePush
