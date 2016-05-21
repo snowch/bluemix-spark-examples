@@ -1,7 +1,13 @@
+
+
+*********************************************************************
+
 [![Build Status](https://travis-ci.org/snowch/bluemix-spark-examples.png)](https://travis-ci.org/snowch/bluemix-spark-examples) 
 
 
-(click the icon and then click View Log to view the build output and the test results from running the examples against live services)
+(click the icon and then click 'View Log' in travis-ci to view the build output and the test results from running the examples against live services)
+
+*********************************************************************
 
 #### Overview
 
