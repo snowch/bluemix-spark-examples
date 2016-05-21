@@ -5,7 +5,7 @@ This example uses the [Stocator](https://github.com/SparkTC/stocator) spark libr
 - process an Apache 2.0 LICENSE file and push the summary of word counts to an objectstore container
 - connect to objectstore and pull the summary word count data into the spark environment
 
-The [build.gradle](./build.gradle) script contains two main tasks for the above behavior, with task names 'ExamplePush' and 'ExamplePull'.  Inspect these tasks for details.
+The [build.gradle](./build.gradle) script contains two main tasks for the above behavior, with task names 'ExamplePush' and 'ExamplePull'.  Inspect these tasks in build.gradle for details - you do *not* need to have experience with gradle to understand this file.
 
 *********************************************************************
 #### Instructions
@@ -54,6 +54,9 @@ Run this example by changing into this directory `./examples/Objectstore` then e
 
 ```
 ./gradlew ExamplePush
+```
+Or
+```
 ./gradlew ExamplePull
 ```
 
