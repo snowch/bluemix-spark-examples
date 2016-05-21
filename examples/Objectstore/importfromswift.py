@@ -31,6 +31,10 @@ if __name__ == "__main__":
         print("Usage: importfromswift <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
         exit(-1)
 
+    # some arguments were getting interpreted by the shell before they got passed to this script
+    # were therefore corrupted by the time we read them.  To resolve this, we base64 encode the
+    # arguments before passing them in.  This means we need to decode them before we can use them
+
     os_auth_url      = b64decode(sys.argv[1])
     os_tenant        = b64decode(sys.argv[2])
     os_username      = b64decode(sys.argv[3])
@@ -40,6 +44,8 @@ if __name__ == "__main__":
     os_container     = b64decode(sys.argv[7])
 
     sc = SparkContext()
+
+    # configure the Stocator swift library with our connection details
 
     prefix = "fs.swift2d.service." + os_region
 
@@ -52,13 +58,13 @@ if __name__ == "__main__":
     sc._jsc.hadoopConfiguration().set(prefix + ".password",     os_password)
     sc._jsc.hadoopConfiguration().set(prefix + ".auth.method",  os_auth_method)
 
-    # Softlayer objectstore
     if (os_auth_method != 'swiftauth'):
         sc._jsc.hadoopConfiguration().set(prefix + ".region",       os_region)
 
     sqlContext = SQLContext(sc)
     
-    # This script loads the data that was uploaded to object store using the script ./exporttoswift.py, e.g.
+    # Before running this script, build.gradle runs the script ./exporttoswift.py to create some data for us
+    # in Objectstore.  This script loads that data.  The structure of the data looks like this:
     
     # counts                                                  04/18/2016 8:21 PM        0 KB
     # counts/_SUCCESS                                         04/18/2016 8:21 PM        0 KB
@@ -67,7 +73,11 @@ if __name__ == "__main__":
     swift_file_url = "swift2d://{0}.{1}/counts".format(os_container, os_region)
 
     # import the data
+
     imported_data = sc.textFile(swift_file_url)
+
+    # now print out some of the imported data to standard out.  You can see this in the file stdout_xxx
+    # created by spark-submit.sh
 
     print(imported_data.take(10))
     
