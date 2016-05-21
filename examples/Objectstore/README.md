@@ -10,7 +10,33 @@ The [build.gradle](./build.gradle) script contains two main tasks for the above 
 *********************************************************************
 #### Instructions
 
-Complete the Setup Instructions in the main project [README](../../README.md).  Next edit the `connection.properties` file in the main project folder so that it has the following properties that point to your Objectstore container:
+
+
+### Pre-requisites
+
+#### Mandatory
+
+- Access to a Bluemix Spark service instance (e.g. free tier)
+- Your local machine is OS/X or Linux (Cygwin *should* work on Windows - see [here](http://stackoverflow.com/questions/37315709/bluemix-spark-as-a-service-how-to-run-spark-submit-sh-with-cygwin))
+- Java 8 JDK installed on your local machine
+- Git client installed on your local machine
+- You are comfortable running commands in the terminal or console
+
+#### Optional
+
+- Cloudant account details (e.g. Free tier on Bluemix)
+- dashDB account details (e.g. Free tier on Bluemix)
+- Objectstore container details (e.g. Free tier on Bluemix, or Softlayer account)
+- Elasticsearch cluster (e.g. Free trial on Compose.io)
+
+*********************************************************************
+
+### Setup Instructions
+
+- Clone this repository `git clone https://github.com/snowch/bluemix-spark-examples.git`
+- Save your `vcap.json` in the cloned folder (see the `vcap.json_template` for an example and [the bluemix docs](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4) for more information)
+- Copy `connection.properties_template` to `connection.properties`
+- Next edit the `connection.properties` file in the main project folder so that it has the following properties for your Objectstore instance:
 
 ```bash
 ### auth url ###
@@ -50,7 +76,7 @@ objectstore_auth_method:keystoneV3
 
 ```
 
-Run this example by changing into this directory `./examples/Objectstore` then executing:
+Finally, run this example by changing into this directory (`./examples/Objectstore`) and executing:
 
 ```
 ./gradlew ExamplePush
@@ -59,4 +85,3 @@ Or
 ```
 ./gradlew ExamplePull
 ```
-
