@@ -31,6 +31,10 @@ if __name__ == "__main__":
         print("Usage: exporttoswift <license file> <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
         exit(-1)
 
+    # some arguments were getting interpreted by the shell before they got passed to this script
+    # were therefore corrupted by the time we read them.  To resolve this, we base64 encode the
+    # arguments before passing them in.  This means we need to decide them before we can use them.
+
     license_filename = sys.argv[1]
     os_auth_url      = b64decode(sys.argv[2])
     os_tenant        = b64decode(sys.argv[3])
@@ -41,6 +45,8 @@ if __name__ == "__main__":
     os_container     = b64decode(sys.argv[8])
 
     sc = SparkContext()
+
+    # setup the Stocator library configuration
 
     prefix = "fs.swift2d.service." + os_region
 
@@ -53,13 +59,12 @@ if __name__ == "__main__":
     sc._jsc.hadoopConfiguration().set(prefix + ".password",     os_password)
     sc._jsc.hadoopConfiguration().set(prefix + ".auth.method",  os_auth_method)
 
-    # Softlayer objectstore
     if (os_auth_method != 'swiftauth'):
         sc._jsc.hadoopConfiguration().set(prefix + ".region",       os_region)
 
     sqlContext = SQLContext(sc)
 
-    # read file from HDFS
+    # read file from HDFS and perform a word count on it
     lines = sc.textFile(license_filename, 1)
     counts = lines.flatMap(lambda x: x.split(' ')) \
                   .map(lambda x: (x, 1)) \
@@ -68,7 +73,7 @@ if __name__ == "__main__":
 
     swift_file_url = "swift2d://{0}.{1}/counts".format(os_container, os_region)
 
-    # save to swift
+    # save the word counts to swift
     counts.saveAsTextFile(swift_file_url)
 
     sc.stop()
