@@ -106,19 +106,18 @@ task testSetup() {
 
 task baseTest(dependsOn: testSetup) << {
 
-    if (!project.hasProperty('summaryOutput')) {
-        println "Running with detailed test output (for summary output, run gradle with -PsummaryOutput)"
-    }
-
     println "Running base tests"
 
+    // TODO how can this be parallelised?
     [
       'Objectstore',
       'Elasticsearch',
       'Cloudant',
       'DashDB'
     ]
-    .each() { proj -> buildProject(proj) }
+    .each() { 
+       proj -> buildProject(proj) 
+    }
 
     if (project.build_failed) {
         throw new GradleException("One or more tests failed")
