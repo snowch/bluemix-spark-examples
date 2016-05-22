@@ -1,6 +1,7 @@
 import static org.gradle.testfixtures.ProjectBuilder.*
 import static org.gradle.testkit.runner.TaskOutcome.*
 import org.gradle.testfixtures.ProjectBuilder
+import groovyx.gpars.GParsPool
 
 
 buildscript {
@@ -9,6 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.codehaus.groovy:groovy-all:2.0.5'
+        classpath "org.codehaus.gpars:gpars:1.1.0"
         classpath gradleTestKit()
     }
 }
@@ -108,15 +110,16 @@ task baseTest(dependsOn: testSetup) << {
 
     println "Running base tests"
 
-    // TODO how can this be parallelised?
-    [
-      'Objectstore',
-      'Elasticsearch',
-      'Cloudant',
-      'DashDB'
-    ]
-    .each() { 
-       proj -> buildProject(proj) 
+    GParsPool.withPool(10) {
+        [
+          'Objectstore',
+          'Elasticsearch',
+          'Cloudant',
+          'DashDB'
+        ]
+        .eachParallel() { 
+           proj -> buildProject(proj) 
+        }
     }
 
     if (project.build_failed) {
