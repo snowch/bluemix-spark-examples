@@ -42,41 +42,12 @@ The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importf
 - Next edit the connection.properties file to add the details for your Objectstore service:
 
 ```bash
-### auth url ###
-
-# SoftLayer Dallas    > E.g. https://dal05.objectstorage.softlayer.net/auth/v1.0/
-# Bluemix Keystone V3 > https://identity.open.softlayer.com/v3/auth/tokens
-objectstore_auth_url:https://identity.open.softlayer.com/v3/auth/tokens
-
-### tenant ###
-
-# Bluemix Keystone V3 > use project_id
-objectstore_tenant:changeme
-
-### username ###
-
-# SoftLayer Dallas    > username
-# Bluemix Keystone V3 > user_id
-objectstore_username:changeme
-
-### password ###
-
-# SoftLayer Dallas    > API key
-# Bluemix Keystone V3 > Password
-objectstore_password:changeme
-
-### region ###
-
-# SoftLayer Dallas    > E.g. dal05
-# Bluemix Keystone V3 > dallas
-objectstore_region:dallas
-
-### auth method ###
-
-# SoftLayer Dallas    > swiftauth
-# Bluemix Keystone V3 > keystoneV3
-objectstore_auth_method:keystoneV3
-
+objectstore_auth_url
+objectstore_tenant
+objectsore_username
+objectstore_password
+objectstore_region
+objectstore_auth_method
 ```
 
 - Finally, run this example by changing into this directory (`cd ./examples/Objectstore`) and executing:
