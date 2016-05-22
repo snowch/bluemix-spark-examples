@@ -1,0 +1,4 @@
+include 'examples/Cloudant'
+include 'examples/DashDB'
+include 'examples/Elasticsearch'
+include 'examples/Objectstore'
