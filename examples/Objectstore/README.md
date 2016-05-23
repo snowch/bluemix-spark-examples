@@ -31,6 +31,10 @@ The python spark scripts are [exporttoswift.py](./exporttoswift.py) and [importf
 - Java 8 JDK installed on your local machine [download](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - Git client installed on your local machine [download](https://git-scm.com/downloads)
 
+#### Recommended
+
+- You should be comfortable using spark-submit.sh as described in the [Bluemix documentation](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#genTopProcId4)
+
 *********************************************************************
 
 #### Instructions
