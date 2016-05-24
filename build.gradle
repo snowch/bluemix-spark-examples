@@ -52,12 +52,12 @@ def buildProject(proj) {
 
     subTasks.each { subTask ->
 
-        def tries = 0
+        def tries = 1
         def test_failed = true
-
+    
         // tests may fail due to unavailability of 3rd party service
         // so we need to retry a few times in the event of a failure
-        while (tries < 3) {
+        while (tries <= 3) {
             // ensure we have a clean environment for each test
             try {
                 GradleRunner.create()
@@ -83,6 +83,7 @@ def buildProject(proj) {
                 writer.close()
             } catch (Exception e) { 
                 // try again
+                println "Test attempt ${tries} failed for ${proj}::${subTask.name}"
                 tries = tries++
                 continue // continue while loop
             }
