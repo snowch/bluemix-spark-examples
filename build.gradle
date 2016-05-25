@@ -84,7 +84,7 @@ def buildProject(proj) {
             } catch (Exception e) { 
                 // try again
                 println "Test attempt ${tries} failed for ${proj}::${subTask.name}"
-                tries = tries++
+                tries++
                 continue // continue while loop
             }
             // test was succesfull - exit try loop
