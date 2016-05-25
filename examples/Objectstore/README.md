@@ -65,3 +65,16 @@ Or
 ```
 
 **NOTE:** The connection.properties and vcap.json files are stored in the top level folder and not in the examples/Objectstore folder because those files are shared between all of the examples.
+
+*********************************************************************
+
+### Debugging
+
+If gradle reports that the build FAILED, check the stderr_X and stdout_X files for errors.
+
+If you see the following error in your stdout_X file, verify that you have correctly set your `objectstore_tenant`, `objectstore_username` and `objectstore_password` in connection.properties:
+
+```
+py4j.protocol.Py4JJavaError: An error occurred while calling o60.saveAsTextFile.
+: Command exception, HTTP Status code: 401 => UNAUTHORIZED
+```
