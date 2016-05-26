@@ -103,10 +103,10 @@ CONTAINER_ID=\$(date +%s)
 cat stdout_*
 """
 
-    file("example_push.sh").text = cmd
+    file("${projectDir}/example_push.sh").text = cmd
 
     exec {
-        commandLine 'chmod', '+x', 'example_push.sh'
+        commandLine 'chmod', "${projectDir}/example_push.sh"
     }
 
 }
@@ -117,7 +117,7 @@ cat stdout_*
 task('ExamplePush', dependsOn: ExamplePushScript) << {
 
     exec {
-        commandLine '/bin/bash', 'example_push.sh'
+        commandLine '/bin/bash', "${projectDir}/example_push.sh"
     }
 }
 
@@ -191,17 +191,17 @@ cat stdout_*
 
 """ 
 
-    file("example_pull.sh").text = cmd
+    file("${projectDir}/example_pull.sh").text = cmd
 
     exec {
-        commandLine 'chmod', '+x', 'example_pull.sh'
+        commandLine 'chmod', "${projectDir}/example_pull.sh"
     }
 }
 
 task('ExamplePull', dependsOn: ExamplePullScript) << {
 
     exec {
-        commandLine '/bin/bash', 'example_pull.sh'
+        commandLine '/bin/bash', "${projectDir}/example_pull.sh"
     }
 }
 
