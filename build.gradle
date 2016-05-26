@@ -111,10 +111,10 @@ task baseTest(dependsOn: testSetup) << {
 
     println "Running base tests"
 
+    // Elasticsearch account not available
     GParsPool.withPool(10) {
         [
           'Objectstore',
-          'Elasticsearch',
           'Cloudant',
           'DashDB'
         ]
