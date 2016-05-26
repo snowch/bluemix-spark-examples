@@ -33,9 +33,6 @@ def os_password    = props.objectstore_password
 def os_region      = props.objectstore_region
 def os_auth_method = props.objectstore_auth_method
 
-// create a unique name for the container so we don't accidentally overwrite existing data
-def os_container   = "${new Date().getTime()}"
-
 //////////////////////////////////////////////////////////////////////////
 // read the vcap.json file and extract the cluster_master_url
 
@@ -56,17 +53,6 @@ task('SetupLibs', type: Download) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// remove output from any previous runs
-
-task("DeleteOutput", type:Delete) {
-   delete fileTree('./') {
-        include '**/*.log'
-        include '**/stderr_*'
-        include '**/stdout_*'
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////
 // Some issues were encountered with some arguments that we pass to the 
 // spark Python script, presumably because the arguments contained special 
 // characters.  Base64 encoding these arguments before sending gets around
@@ -78,32 +64,60 @@ def encode(val) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// This task executes spark-submit.sh. An Apache license file is passed 
-// which the spark script performs a word count on.  The spark script 
-// then saves the word counts to the object store defined in
-// connection.properties
+// This task creates a script for executing spark submit 
 
-task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
+task('ExamplePushScript', dependsOn: SetupLibs) << {
 
-    def cmd = ["../../spark-submit.sh",
-                           "--vcap", "../../vcap.json",
-                           "--deploy-mode", "cluster",
-                           "--master", "${cluster_master_url}",
-                           "--jars", "${buildDir}/stocator-1.0.2.jar",
-                           "--files", "./LICENSE",
-                           "./exporttoswift.py",
-                               "file://LICENSE",
-                               encode(os_auth_url),
-                               encode(os_tenant),
-                               encode(os_username),
-                               encode(os_password),
-                               encode(os_region),
-                               encode(os_auth_method),
-                               encode(os_container)]
-    println cmd.join(" ") // print out command executed for debugging purposes
+def cmd = """#!/bin/bash
+
+# abort script on error
+set -e 
+
+rm *.log
+rm stdout_*
+rm stderr_*
+
+# Create a new container each time we run the script.  This will
+# avoid us accidentally overwriting existing containers.
+
+CONTAINER_ID=\$(date +%s)
+
+../../spark-submit.sh \\
+               --vcap ../../vcap.json \\
+               --deploy-mode cluster \\
+               --master ${cluster_master_url} \\
+               --jars ${buildDir}/stocator-1.0.2.jar \\
+               --files ./LICENSE \\
+               ./export_to_swift.py \\
+                   file://LICENSE \\
+                   '${os_auth_url}' \\
+                   '${os_tenant}' \\
+                   '${os_username}' \\
+                   '${os_password}' \\
+                   '${os_region}' \\
+                   '${os_auth_method}' \\
+                   \${CONTAINER_ID}
+
+# print out the output if successful
+
+cat stdout_*
+"""
+
+    file("example_push.sh").text = cmd
 
     exec {
-        commandLine cmd
+        commandLine 'chmod', '+x', 'example_push.sh'
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+// This task creates a script for executing spark submit 
+
+task('ExamplePush', dependsOn: ExamplePushScript) << {
+
+    exec {
+        commandLine '/bin/bash', 'example_push.sh'
     }
 }
 
@@ -114,25 +128,80 @@ task('ExamplePush', dependsOn: [DeleteOutput, SetupLibs]) << {
 // output can be seen in the file stdout_xxxxx file that is created by
 // spark-submit.sh
 
-task('ExamplePull', dependsOn: ExamplePush) << {
+task('ExamplePullScript', dependsOn: SetupLibs) << {
 
-    def cmd = ["../../spark-submit.sh",
-                           "--vcap", "../../vcap.json",
-                           "--deploy-mode", "cluster",
-                           "--master", "${cluster_master_url}",
-                           "--jars", "${buildDir}/stocator-1.0.2.jar",
-                           "./importfromswift.py",
-                               encode(os_auth_url),
-                               encode(os_tenant),
-                               encode(os_username),
-                               encode(os_password),
-                               encode(os_region),
-                               encode(os_auth_method),
-                               encode(os_container)]
-    println cmd.join(" ") // print out command executed for debugging purposes
+def cmd = """#!/bin/bash
+
+# abort script on error
+set -e
+
+rm *.log
+rm stdout_*
+rm stderr_*
+
+# Create a new container each time we run the script.  This will
+# avoid us accidentally overwriting existing containers.
+
+CONTAINER_ID=\$(date +%s)
+
+# First push some data to objectstore
+
+../../spark-submit.sh \\
+               --vcap ../../vcap.json \\
+               --deploy-mode cluster \\
+               --master ${cluster_master_url} \\
+               --jars ${buildDir}/stocator-1.0.2.jar \\
+               --files ./LICENSE \\
+               ./export_to_swift.py \\
+                   file://LICENSE \\
+                   '${os_auth_url}' \\
+                   '${os_tenant}' \\
+                   '${os_username}' \\
+                   '${os_password}' \\
+                   '${os_region}' \\
+                   '${os_auth_method}' \\
+                   \${CONTAINER_ID}
+
+# remove output
+
+rm *.log
+rm stdout_*
+rm stderr_*
+
+# Now pull the data back from objectstore
+
+../../spark-submit.sh \\
+               --vcap ../../vcap.json \\
+               --deploy-mode cluster \\
+               --master ${cluster_master_url} \\
+               --jars ${buildDir}/stocator-1.0.2.jar \\
+               --files ./LICENSE \\
+               ./import_from_swift.py \\
+                   '${os_auth_url}' \\
+                   '${os_tenant}' \\
+                   '${os_username}' \\
+                   '${os_password}' \\
+                   '${os_region}' \\
+                   '${os_auth_method}' \\
+                   \${CONTAINER_ID}
+
+# print out the output if successful
+
+cat stdout_*
+
+""" 
+
+    file("example_pull.sh").text = cmd
 
     exec {
-        commandLine cmd
+        commandLine 'chmod', '+x', 'example_pull.sh'
+    }
+}
+
+task('ExamplePull', dependsOn: ExamplePullScript) << {
+
+    exec {
+        commandLine '/bin/bash', 'example_pull.sh'
     }
 }
 

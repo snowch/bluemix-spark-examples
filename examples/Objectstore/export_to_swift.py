@@ -21,31 +21,26 @@ import re
 import sys
 from operator import add
 
-from base64 import b64decode
-
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
 
 if __name__ == "__main__":
-    if len(sys.argv) != 8:
-        print("Usage: importfromswift <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
+    if len(sys.argv) != 9:
+        print("Usage: exporttoswift <license file> <auth url> <tenant> <username> <password> <region> <auth method> <container>", file=sys.stderr)
         exit(-1)
 
-    # some arguments were getting interpreted by the shell before they got passed to this script
-    # were therefore corrupted by the time we read them.  To resolve this, we base64 encode the
-    # arguments before passing them in.  This means we need to decode them before we can use them
-
-    os_auth_url      = b64decode(sys.argv[1])
-    os_tenant        = b64decode(sys.argv[2])
-    os_username      = b64decode(sys.argv[3])
-    os_password      = b64decode(sys.argv[4])
-    os_region        = b64decode(sys.argv[5])
-    os_auth_method   = b64decode(sys.argv[6])
-    os_container     = b64decode(sys.argv[7])
+    license_filename = sys.argv[1]
+    os_auth_url      = sys.argv[2]
+    os_tenant        = sys.argv[3]
+    os_username      = sys.argv[4]
+    os_password      = sys.argv[5]
+    os_region        = sys.argv[6]
+    os_auth_method   = sys.argv[7]
+    os_container     = sys.argv[8]
 
     sc = SparkContext()
 
-    # configure the Stocator swift library with our connection details
+    # setup the Stocator library configuration
 
     prefix = "fs.swift2d.service." + os_region
 
@@ -62,23 +57,19 @@ if __name__ == "__main__":
         sc._jsc.hadoopConfiguration().set(prefix + ".region",       os_region)
 
     sqlContext = SQLContext(sc)
-    
-    # Before running this script, build.gradle runs the script ./exporttoswift.py to create some data for us
-    # in Objectstore.  This script loads that data.  The structure of the data looks like this:
-    
-    # counts                                                  04/18/2016 8:21 PM        0 KB
-    # counts/_SUCCESS                                         04/18/2016 8:21 PM        0 KB
-    # counts/part-00000-attempt_201604181921_0003_m_000000_2  04/18/2016 8:21 PM        6 KB
+
+    # read file from HDFS and perform a word count on it
+    lines = sc.textFile(license_filename, 1)
+    counts = lines.flatMap(lambda x: x.split(' ')) \
+                  .map(lambda x: (x, 1)) \
+                  .reduceByKey(add) \
+                  .filter(lambda x: x[0].isalnum())
 
     swift_file_url = "swift2d://{0}.{1}/counts".format(os_container, os_region)
 
-    # import the data
+    # save the word counts to swift
+    counts.saveAsTextFile(swift_file_url)
 
-    imported_data = sc.textFile(swift_file_url)
-
-    # now print out some of the imported data to standard out.  You can see this in the file stdout_xxx
-    # created by spark-submit.sh
-
-    print(imported_data.take(10))
-    
     sc.stop()
+
+    print(">> successfully exported data to objectstore at {0}".format(swift_file_url))
