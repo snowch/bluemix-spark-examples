@@ -53,17 +53,6 @@ task('SetupLibs', type: Download) {
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Some issues were encountered with some arguments that we pass to the 
-// spark Python script, presumably because the arguments contained special 
-// characters.  Base64 encoding these arguments before sending gets around
-// this issue, and the spark Python script only has to base64 decode the
-// arguments before it uses them
-
-def encode(val) {
-    return val.getBytes('UTF-8').encodeBase64()
-}
-
-//////////////////////////////////////////////////////////////////////////
 // This task creates a script for executing spark submit 
 
 task('ExamplePushScript', dependsOn: SetupLibs) << {
@@ -117,7 +106,7 @@ cat stdout_*
 task('ExamplePush', dependsOn: ExamplePushScript) << {
 
     exec {
-        commandLine '/bin/bash', "${projectDir}/example_push.sh"
+        commandLine "${projectDir}/example_push.sh"
     }
 }
 
@@ -201,7 +190,7 @@ cat stdout_*
 task('ExamplePull', dependsOn: ExamplePullScript) << {
 
     exec {
-        commandLine '/bin/bash', "${projectDir}/example_pull.sh"
+        commandLine "${projectDir}/example_pull.sh"
     }
 }
 
