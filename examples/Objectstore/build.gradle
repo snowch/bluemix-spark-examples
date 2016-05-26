@@ -62,9 +62,9 @@ def cmd = """#!/bin/bash
 # abort script on error
 set -e 
 
-rm *.log
-rm stdout_*
-rm stderr_*
+rm -f *.log
+rm -f stdout_*
+rm -f stderr_*
 
 # Create a new container each time we run the script.  This will
 # avoid us accidentally overwriting existing containers.
@@ -124,9 +124,9 @@ def cmd = """#!/bin/bash
 # abort script on error
 set -e
 
-rm *.log
-rm stdout_*
-rm stderr_*
+rm -f *.log
+rm -f stdout_*
+rm -f stderr_*
 
 # Create a new container each time we run the script.  This will
 # avoid us accidentally overwriting existing containers.
@@ -153,9 +153,9 @@ CONTAINER_ID=\$(date +%s)
 
 # remove output
 
-rm *.log
-rm stdout_*
-rm stderr_*
+rm -f *.log
+rm -f stdout_*
+rm -f stderr_*
 
 # Now pull the data back from objectstore
 
