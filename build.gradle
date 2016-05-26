@@ -82,13 +82,9 @@ def buildProject(proj) {
                         .build()
                 writer.close()
             } catch (Exception e) { 
-                e.printStackTrace()
+                //e.printStackTrace()
                 // try again
                 println "Test attempt ${tries} failed for ${proj}::${subTask.name}"
-
-                exec {
-                    commandLine "ls", 'examples/Objectstore'
-                }
                 tries++
                 continue // continue while loop
             }
