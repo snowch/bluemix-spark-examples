@@ -82,7 +82,7 @@ def buildProject(proj) {
                         .build()
                 writer.close()
             } catch (Exception e) { 
-                e.printStacktrace()
+                e.printStackTrace()
                 // try again
                 println "Test attempt ${tries} failed for ${proj}::${subTask.name}"
 
