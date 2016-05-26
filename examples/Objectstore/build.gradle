@@ -106,7 +106,7 @@ cat stdout_*
     file("${projectDir}/example_push.sh").text = cmd
 
     exec {
-        commandLine 'chmod', "${projectDir}/example_push.sh"
+        commandLine 'chmod', '+x', "${projectDir}/example_push.sh"
     }
 
 }
@@ -194,7 +194,7 @@ cat stdout_*
     file("${projectDir}/example_pull.sh").text = cmd
 
     exec {
-        commandLine 'chmod', "${projectDir}/example_pull.sh"
+        commandLine 'chmod', '+x', "${projectDir}/example_pull.sh"
     }
 }
 
